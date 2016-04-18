@@ -18,10 +18,9 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('#catSelect').change(function(e){
 		var data = 'val=' + $(this).val();
-		alert(data);
 		$.ajax({
 			type: 'post',
-			url: 'getParams.php',
+			url: '/getParams.php',
 			data: data,
 			success: function(result){
 				$('#paramSelect').empty();

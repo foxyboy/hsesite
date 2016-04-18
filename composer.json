@@ -1,6 +1,7 @@
 {
     "require": {
         "twig/twig": "~1.0",
-        "klein/klein": "^2.1"
+        "klein/klein": "^2.1",
+        "twbs/bootstrap": "^3.3"
     }
 }

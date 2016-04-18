@@ -15,7 +15,7 @@ $loader = new Twig_Loader_Filesystem('C:/Apache24/htdocs/templates');
 $klein = new \Klein\Klein();
 
 
-$klein->respond('GET', '/', function () use ($twig) {
+$klein->respond('GET', '/admin/', function () use ($twig) {
 
 	$paramName = htmlspecialchars($_POST['name']);
 	$paramType = htmlspecialchars($_POST['type']);
@@ -34,7 +34,7 @@ $klein->respond('GET', '/', function () use ($twig) {
 		'rows' => $rows));
 });
 
-$klein->respond('GET', '/cat', function() use ($twig){
+$klein->respond('GET', '/admin/categories/', function() use ($twig){
 	$catName = htmlspecialchars($_POST['name']);
 	if(!empty($catName)){
 		$query = "INSERT INTO catNames (name) VALUES ('".$catName."')";
@@ -52,7 +52,7 @@ $klein->respond('GET', '/cat', function() use ($twig){
 		));	
 });
 
-$klein->respond('GET', '/class', function() use ($twig){
+$klein->respond('GET', '/admin/classes/', function() use ($twig){
 	$catId = htmlspecialchars($_POST['name']);
 	$paramId = htmlspecialchars($_POST['param']);
 	if(!empty($catId) && !empty($paramId)){
@@ -92,7 +92,7 @@ $klein->respond('GET', '/class', function() use ($twig){
 		));	
 });
 
-$klein->respond('GET', '/product', function() use ($twig){
+$klein->respond('GET', '/admin/products/', function() use ($twig){
 	$prodName = htmlspecialchars($_POST['prodName']);
 	if(!empty($prodName)){
 		$query = "INSERT INTO products (name) VALUES ('".$prodName."')";
@@ -109,7 +109,7 @@ $klein->respond('GET', '/product', function() use ($twig){
 		'rows' => $rows));	
 });
 
-$klein->respond('GET', '/productParam', function() use ($twig){
+$klein->respond('GET', '/admin/main/', function() use ($twig){
 	$prodName = htmlspecialchars($_POST['prodName']);
 	$catName = htmlspecialchars($_POST['paramName']);
 	$value = htmlspecialchars($_POST['value']);
