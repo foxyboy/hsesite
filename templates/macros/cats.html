@@ -1,0 +1,47 @@
+{% macro cats(rows) %}
+	{% for row in rows %}
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="h{{ row.alias }}">
+				<h4 class="panel-title">
+					<a role="button" data-toggle="collapse" data-parent="#accordion" href="#c{{ row.alias }}" aria-expanded="false" aria-controls="c{{ row.alias }}" class="collapsed">{{ row.name }}</a>
+				</h4>
+			</div>
+			<div id="c{{ row.alias }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="h{{ row.alias }}" aria-expanded="false" style="height:0px">
+				<div class="panel-body">
+					{% if row.children is defined %}
+						{{ _self.cats(row.children) }}
+					{% else %}
+						{{ _self.table(row.table) }}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endmacro %}
+
+{% macro table(rows) %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Товар</th>
+				<th>Категория</th>
+				<th>Параметр</th>
+				<th>Значение</th>
+				<th>Единица измерения</th>
+			</tr>
+		</thead>
+		<tbody>	
+			{% for row in rows %}
+				<tr>
+					<th>{{ row.id }}</th>
+					<td>{{ row.prodName }}</td>
+					<td>{{ row.catName }}</td>
+					<td>{{ row.paramName }}</td>
+					<td>{{ row.value }}</td>
+					<td>{{ row.type }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endmacro %}

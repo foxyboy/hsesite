@@ -1,5 +1,6 @@
 ﻿<?php
 require_once __DIR__ . '/vendor/autoload.php';
+require_once '/functions.php';
 
 $loader = new Twig_Loader_Filesystem('C:/Apache24/htdocs/templates');
 	
@@ -14,6 +15,28 @@ $loader = new Twig_Loader_Filesystem('C:/Apache24/htdocs/templates');
 
 $klein = new \Klein\Klein();
 
+$klein->respond('GET', '/', function() use ($twig){
+	$query = 'SELECT id, name, alias FROM catnames WHERE parent IS NULL';
+	$res = mysql_query($query);
+	while($row = mysql_fetch_array($res)){
+		$groups[] = array(
+			'name' => $row['name'], 
+			'alias' => $row['alias'],
+			'children' => getChildren($row['id'])
+			);
+	}
+
+	echo $twig->render('index.html', array('groups' => $groups));	
+});
+
+$klein->respond('GET', '/categories/[*:title]', function($req, $res) use ($twig){
+	$query = 'SELECT name, alias FROM catnames WHERE parent IN (SELECT id FROM catnames WHERE alias = "'.$req->title.'")';
+	$res = mysql_query($query);
+	while($row = mysql_fetch_array($res)){
+		$groups[] = $row;
+	}
+	echo $twig->render('index.html', array('groups' => $groups, 'alias' => $req->title));
+});
 
 $klein->respond('GET', '/admin/', function () use ($twig) {
 
@@ -30,7 +53,7 @@ $klein->respond('GET', '/admin/', function () use ($twig) {
 		$rows[] = $row;
 	}
 
-	echo $twig->render('index.html', array('act' => 'params',
+	echo $twig->render('admin.html', array('act' => 'params',
 		'rows' => $rows));
 });
 
